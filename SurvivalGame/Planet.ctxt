@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=Planet
+comment0.text=\r\n\ Planet\ class,\ an\ obstacle\ \r\n\ that\ orbits\ the\ centre\r\n\ and\ destroys\ any\ bullets\ that\ touch\ it\r\n\ \r\n\ @author\ Tibi\ A.\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=void\ act()
+numComments=2

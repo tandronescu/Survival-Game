@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=Shield
+comment0.text=\r\n\ Shield\ class,\ essentially\r\n\ protects\ the\ rocket\ from\ \r\n\ any\ obstacles\r\n\ \r\n\ @author\ Tibi\ A.\r\n\ @version\ 1.0\r\n
+comment1.params=x
+comment1.target=Shield(int)
+comment2.params=
+comment2.target=void\ act()
+numComments=3

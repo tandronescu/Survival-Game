@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Rocket_V2
+comment0.text=\r\n\ 2nd\ rocket\ for\ 2\ player\ game,\r\n\ same\ functions\ as\ first\ one\ put\ with\ different\ keys\r\n\ \r\n\ @author\ Tibi\ A.\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=Rocket_V2()
+comment2.params=
+comment2.target=void\ act()
+comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ Rocket_V2\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+numComments=3

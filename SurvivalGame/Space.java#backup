@@ -1,0 +1,398 @@
+import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+
+/**
+ * Write a description of class MyWorld here.
+ * 
+ * This is the world for the
+ * asteroid game
+ * 
+ * @Tibi Andronescu
+ * @1.0 
+ */
+public class Space extends World
+{
+    // global variables
+    private int gameTime = 0;
+    private int waitTime = 0;
+    Space currentWorld;
+    int gameState;
+    
+    // variable for shield count and time
+    int shieldCount = 0;
+    int shieldTime = 0;
+    
+    // variable to account for potential extra asteroid kill artificially added
+    int temp = 0;
+
+    // sound
+    GreenfootSound background = new GreenfootSound("deep_space.mp3.mp3");
+    /**
+     * Constructor for objects of class Space.
+     * 
+     */
+    public Space()
+    {    
+        // Create a new world with 1500x1000 cells with a cell size of 1x1 pixels.
+        super(1500, 850, 1, false); 
+        gameTime = 0;
+       
+        /*
+        // add planet
+        addObject(new Planet(), 300, 100);
+        // add second rocket
+        addObject( new Rocket_V2(), 500, 100);
+        */
+    }
+    
+    public void act() {
+       background.play();
+       background.setVolume(25);
+       
+       switch (gameState) {
+           // Start Screen Initialization
+           case 0: setBackground("space1.jpg");
+                   addObject(new Button1(false, "Start Game (1 Player)"), 750, 100);
+                   addObject(new Button2(false, "Start Game (2 Player)"), 750, 200);
+                   gameState = 1;
+           
+           // Start Screen Loop
+           case 1: MouseInfo mouse = Greenfoot.getMouseInfo();
+        
+                   if (mouse != null) {
+                        Actor currentActor = mouse.getActor();
+                        if (currentActor != null) {
+                            // check for first button (1 player)
+                            if (currentActor.getClass() == Button1.class) {
+                                Button1 currentButton = (Button1) currentActor;
+                                int mouseButtonPressed = mouse.getButton();
+                                int mouseClickCount = mouse.getClickCount();
+                                if (mouseClickCount == 1) {
+                                    currentButton.buttonToggle();
+                                    gameState = 2;
+                                    removeObject(currentButton);
+                                    removeObjects(getObjects(Button2.class));
+                                }
+                            }
+                            
+                            // check for second button (2 player)
+                            if (currentActor.getClass() == Button2.class) {
+                                Button2 currentButton = (Button2) currentActor;
+                                int mouseButtonPressed = mouse.getButton();
+                                int mouseClickCount = mouse.getClickCount();
+                                if (mouseClickCount == 1) {
+                                    currentButton.buttonToggle();
+                                    gameState = 8;
+                                    removeObject(currentButton);
+                                    removeObjects(getObjects(Button1.class));
+                                }
+                            }
+                        }
+                   }
+           break;
+           
+           case 2: textBox(singlePlayerHeading, 40, 750, 50);
+                   textBox(singlePlayerInstructions1, 20, 750, 100);
+                   textBox(singlePlayerInstructions2, 20, 750, 125);
+                   textBox(singlePlayerInstructions3, 20, 750, 150);
+                   textBox(singlePlayerInstructions4, 20, 750, 175);
+                   textBox(singlePlayerInstructions5, 20, 750, 200);
+                   textBox(singlePlayerInstructions6, 20, 750, 225);
+                   textBox(singlePlayerInstructions7, 20, 750, 275);
+                   addObject(new Button3(false, "Proceed"), 750, 350);
+
+                    // press button to proceed
+
+                    MouseInfo mouse1 = Greenfoot.getMouseInfo();
+
+                    if (mouse1 != null) {
+                        Actor currentActor = mouse1.getActor();
+                        if (currentActor != null) {
+                            if (currentActor.getClass() == Button3.class) {
+                                Button3 currentButton = (Button3) currentActor;
+                                int mouse1ButtonPressed = mouse1.getButton();
+                                int mouse1ClickCount = mouse1.getClickCount();
+                                if (mouse1ClickCount == 1) {
+                                    currentButton.buttonToggle();
+                                    removeObjects(getObjects(Button3.class));
+                                    removeText();
+                                    gameState = 3;
+                                }
+                            }
+                        }
+                    }
+           break;
+           // Game Initialization
+           case 3: addObject(new Rocket(), 100, 250);
+                   gameTime = 0;
+                   // spawn a random number of asteroids b/t 0 and 4
+                   spawnNoSplitAsteroids((int)(Math.random() * 4.49));
+                   
+                   NoSplitAsteroid.asteroidKills = 0;
+                   NavalMine.navalMineKills = 0;
+                   NoSplitAsteroid.lives = 3;
+                   gameState = 4;
+          
+           // Start Gameplay
+           case 4: gameTime += 1;
+        
+                    if ( (gameTime % 180) == 0) {
+                        addObject( new NoSplitAsteroid(), (int)(Math.random()*1500), (int)(Math.random()*1000));
+                    }
+                    
+                    // timer
+                    /*
+                    String timeElapsed = "Time Elapsed: " + Integer.toString(gameTime/60);
+                    textBox(timeElapsed, 25, 1400, 10);
+                    
+                    // shield count display
+                    String shieldCountDisplay = "Shields available: " + Integer.toString(shieldCountTemp);
+                    textBox(shieldCountDisplay, 25, 1400, 40);
+                    */
+                   
+                    // if there is a shield present, create a shieldTime variable
+                    if ( getObjects(Shield.class) != null ) {
+                        shieldTime += 1;
+                        
+                        // remove the shield after 10 seconds 
+                        if ( shieldTime % 120 == 0 ) {
+                            removeObjects(getObjects(Shield.class));
+                        }
+                    }
+                    
+                    // if the player runs out of lives, go to end game case
+                    // this variable gets the lives variable from the NoSplitAsteroid class
+                    int worldLives = NoSplitAsteroid.lives;
+                    if ( worldLives == 0) {
+                        gameState = 7;
+                    }
+                    
+                    // if x asteroids are destroyed, move to next stage
+                    if ( NoSplitAsteroid.asteroidKills == 1) {
+                        gameState = 5;
+                    }
+                    
+                    // if 5 or 10 asteroids have been destroyed, grant the user a shield (11 to account for extra added)
+                    if ( (NoSplitAsteroid.asteroidKills == 5) || (NoSplitAsteroid.asteroidKills == 11) ) {
+                        shieldCount += 1;
+                        NoSplitAsteroid.asteroidKills += 1; 
+                    }
+                    
+                    // if there is a shield available, press shift to activate
+                    if ( (shieldCount >= 1) && ( Greenfoot.isKeyDown("shift")) ) {
+                        addObject( new Shield(65), Rocket.x, Rocket.y );
+                        shieldCount -= 1;
+                    }
+                    
+                    // reset game
+                    if (Greenfoot.isKeyDown("R")) {
+                        removeObjects(getObjects(Rocket.class));
+                        removeObjects(getObjects(NoSplitAsteroid.class));
+                        gameState = 3;
+                    }
+                    break;
+           
+           // next stage initialization
+           case 5: 
+                   // change background of world
+                   setBackground("water.jpg");
+                   
+                   // call submarine function for the rocket class, which sets the image to a submarine
+                   getObjects(Rocket.class).get(0).submarine();
+                   
+                   // change bullet colour to yellow
+                   //getObjects(Bullet.class).get(0).yellowDraught();
+                   
+                   // remove all asteroids
+                   removeObjects(getObjects(NoSplitAsteroid.class));
+                   
+                   // add a number of naval mines b/t 0 and 5
+                   spawnNavalMines( ((int)(Math.random() * 5.49)));
+                   
+                   gameState = 6;
+                   
+                   
+           case 6: gameTime += 1;
+                   
+                   if ( (gameTime % 180) == 0) {
+                        addObject( new NavalMine(), (int)(Math.random()*1500), (int)(Math.random()*1000));
+                    }
+                    
+                    /*
+                    // timer
+                    String timeElapsed1 = "Time Elapsed: " + Integer.toString(gameTime/60);
+                    textBox(timeElapsed1, 25, 1400, 10);
+                    */
+                   
+                   // if there is a shield present, create a shieldTime variable
+                    if ( getObjects(Shield.class) != null ) {
+                        shieldTime += 1;
+                        
+                        // remove the shield after 10 seconds 
+                        if ( shieldTime % 120 == 0 ) {
+                            removeObjects(getObjects(Shield.class));
+                        }
+                    }
+                    
+                    // if 5 or 10 naval mineshave been destroyed, grant the user a shield (11 to account for extra added)
+                    if ( (NavalMine.navalMineKills == 5) || (NavalMine.navalMineKills == 11) ) {
+                        shieldCount += 1;
+                        NavalMine.navalMineKills += 1; 
+                    }
+                    
+                    // if there is a shield available, press shift to activate
+                    if ( (shieldCount >= 1) && ( Greenfoot.isKeyDown("shift")) ) {
+                        addObject( new Shield(65), Rocket.x, Rocket.y );
+                        shieldCount -= 1;
+                    }
+                    
+                    // reset game
+                    if (Greenfoot.isKeyDown("R")) {
+                        removeObjects(getObjects(Rocket.class));
+                        removeObjects(getObjects(NavalMine.class));
+                        gameState = 3;
+                    }
+                    
+                    // if the player runs out of lives, go to end game case   
+                    if ( NoSplitAsteroid.lives == 0) {
+                        gameState = 7;
+                    }
+                   break;
+                   
+           // game over case, remove all objects then display message       
+           case 7: removeObjects(getObjects(null));
+                   textBox("Game Over", 150, 760, 200);
+                   
+                   // variable to hold asteroid kill count
+                   int worldAsteroidKills = NoSplitAsteroid.asteroidKills;
+                   
+                   // clause to give temp a value if extra artifical kill was added in shield if statement
+                   if ( NoSplitAsteroid.asteroidKills >= 5 ) {
+                       temp = 1;
+                    }
+                   textBox1(("Asteroids destroyed: " + (Integer.toString(worldAsteroidKills - temp))), 100, 750, 400);
+                   
+                   // variable to hold naval mine kill count
+                   int worldNavalMineKills = NavalMine.navalMineKills;
+                   textBox1(("Naval Mines Destroyed: " + (Integer.toString(worldNavalMineKills))), 100, 750, 600);
+                   NoSplitAsteroid.lives = 3;
+                   
+                   // press button to reset and try again
+                   addObject( new Button4(false, "Try Again"), 750, 800);
+                   MouseInfo mouse2 = Greenfoot.getMouseInfo();
+
+                    if (mouse2 != null) {
+                        Actor currentActor = mouse2.getActor();
+                        if (currentActor != null) {
+                            if (currentActor.getClass() == Button4.class) {
+                                Button4 currentButton = (Button4) currentActor;
+                                int mouse2ButtonPressed = mouse2.getButton();
+                                int mouse2ClickCount = mouse2.getClickCount();
+                                if (mouse2ClickCount == 1) {
+                                    currentButton.buttonToggle();
+                                    removeObjects(getObjects(Button4.class));
+                                    removeText();
+                                    removeText1();
+                                    NoSplitAsteroid.asteroidKills = 0;
+                                    gameState = 0;
+                                }
+                            }
+                        }
+                    }
+                   break;
+                   
+           // 2 player game initialization
+           case 8: gameTime = 0;
+                   addObject(new Rocket(), 100, 250);
+                   spawnAsteroids((int)(Math.random() * 4.49));
+                   // add planet
+                   addObject(new Planet(), 300, 100);
+                   // add second rocket
+                   addObject( new Rocket_V2(), 500, 100);
+                   gameState = 8;
+                   
+           case 9: gameTime += 1;
+        
+                    if ( (gameTime % 180) == 0) {
+                        addObject( new Asteroid(), (int)(Math.random()*600), (int)(Math.random()*400));
+                    }
+                    
+                    // reset game
+                    if (Greenfoot.isKeyDown("R")) {
+                        removeObjects(getObjects(Rocket.class));
+                        removeObjects(getObjects(Asteroid.class));
+                        removeObjects(getObjects(Rocket_V2.class));
+                        removeObjects(getObjects(Planet.class));
+                        gameState = 4;
+                    }
+                    break;
+                    
+           default: gameState=0;
+        }
+    }
+    
+    public int getTime() {
+        return gameTime;
+    }
+    
+    // function for creating a set amount of asteroids, giving them a random position
+    public void spawnAsteroids(int numberOfAsteroids) {
+        for (int i = 1; i <= numberOfAsteroids; i += 1) {
+            addObject(new Asteroid(), ((int)(Math.random() * 600)), ((int)(Math.random() * 400)));
+        }
+    }
+    
+    // function for creating a set amount of no split asteroids, giving them a random position
+    public void spawnNoSplitAsteroids(int numberOfAsteroids) {
+        for (int i = 1; i <= numberOfAsteroids; i += 1) {
+            addObject(new NoSplitAsteroid(), ((int)(Math.random() * 600)), ((int)(Math.random() * 400)));
+        }
+    }
+    
+    // function to create NavalMines
+    public void spawnNavalMines(int numberOfNavalMines) {
+        for (int i = 1; i <= numberOfNavalMines; i += 1) {
+            addObject(new NavalMine(), ((int)(Math.random() * 600)), ((int)(Math.random() * 400)));
+        }
+    }
+    /**
+    This is the method that creates a text box
+    Essentially, various pieces of texts will be assigned
+    to variables which will then be put into the 
+    textBox function when it is called
+    
+    @param x string with the text being displayed
+    @param y size of font
+    */
+    
+    // variables for instructio text boxes
+    String singlePlayerHeading = "Single Player Instructions";
+    String singlePlayerInstructions1 = "Controls: To turn ship use left and right arrow keys.";
+    String singlePlayerInstructions2 = "Press the up arrow to accelerate your ship.";
+    String singlePlayerInstructions3 = "Press the down arrow to deccelerate your ship";
+    String singlePlayerInstructions4 = "Press the S and D keys to turn at a rate relative to your speed";
+    String singlePlayerInstructions5 = "Press the 1 key to reset the speed of your ship to default";
+    String singlePlayerInstructions6 = "Press the spacebar to shoot";
+    String singlePlayerInstructions7 = "Game Mechanics: Shoot Asteroids to destroy them";
+    
+
+    
+    public void textBox(String x, int y, int z, int zz) {
+        addObject(new Text(x, y), z, zz);
+    }
+    
+    // same textBox creator but with colour customization
+    public void textBox1(String x, int y, int z, int zz) {
+        addObject(new Text1(x, y), z, zz);
+    }
+    
+    // removes a textbox
+    public void removeText() {
+        removeObjects(getObjects(Text.class));
+       }
+       
+    public void removeText1() {
+        removeObjects(getObjects(Text1.class));
+    }
+    
+    
+}

@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=Text
+comment0.text=\r\n\ \r\n\ This\ class\ creates\ a\ textbox\r\n\ \r\n\ @param\ x\ this\ represents\ the\ text\ displayed\r\n\ @author\ Tibi\ A.\ \r\n\ @version\ 1.0\ \r\n
+comment1.params=x\ y
+comment1.target=Text(java.lang.String,\ int)
+comment2.params=
+comment2.target=void\ act()
+numComments=3

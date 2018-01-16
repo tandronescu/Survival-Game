@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Button3
+comment0.text=\r\n\ Button\r\n\ \r\n\ @author\ Tibi\ A.\ \r\n\ @version\ 1.0\r\n
+comment1.params=stateIn\ textIn
+comment1.target=Button3(boolean,\ java.lang.String)
+comment2.params=
+comment2.target=void\ act()
+comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ Button3\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+numComments=3

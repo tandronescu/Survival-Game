@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Mover
+comment0.text=\r\n\ Class\ that\ holds\ all\ the\ \r\n\ movement\ functions\ for\ all\ the\r\n\ subclasses\ like\ rocket\ or\ asteroid\r\n\ \r\n\ @author\ Tibi\ A.\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=Mover()
+comment2.params=direction
+comment2.target=Mover(int)
+comment3.params=speedIn
+comment3.target=Mover(double)
+comment4.params=speedIn\ direction
+comment4.target=Mover(double,\ int)
+comment5.params=
+comment5.target=void\ act()
+comment6.params=
+comment6.target=void\ moveSteadily()
+comment6.text=\r\n\ moves\ the\ object\ and\ wraps\ it\ around\ the\ screen\r\n
+comment7.params=speedIn
+comment7.target=void\ moveSteadily(int)
+numComments=8

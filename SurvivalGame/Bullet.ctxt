@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=Bullet
+comment0.text=\r\n\ Bullet\ Class,\ movement\ code\ \r\n\ +\ code\ to\ remove\ 2nd\ rocket\r\n\ in\ 2\ player\ game\r\n\ \r\n\ @author\ Tibi\ A.\ \r\n\ @version\ 1.0\r\n
+comment1.params=direction
+comment1.target=Bullet(int)
+comment2.params=
+comment2.target=void\ act()
+numComments=3

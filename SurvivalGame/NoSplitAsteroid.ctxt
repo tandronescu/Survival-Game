@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=NoSplitAsteroid
+comment0.text=\r\n\ This\ is\ the\ class\ for\ the\ \r\n\ version\ of\ the\ asteroid\ that\ does\ not\ \r\n\ split,\ ie\ it\ is\ destroyed\ from\ \r\n\ one\ shot\ of\ a\ bullet\r\n\ \r\n\ @author\ Tibi\ A.\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=NoSplitAsteroid()
+comment2.params=
+comment2.target=void\ act()
+comment2.text=\r\n\ Act\ -\ do\ whatever\ the\ NoSplitAsteroid\ wants\ to\ do.\ This\ method\ is\ called\ whenever\r\n\ the\ 'Act'\ or\ 'Run'\ button\ gets\ pressed\ in\ the\ environment.\r\n
+numComments=3

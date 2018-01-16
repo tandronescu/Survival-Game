@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=Button6
+comment0.text=\r\n\ Buttom\r\n\ \r\n\ @author\ Tibi\ A.\ \r\n\ @version\ 1.0\r\n
+comment1.params=stateIn\ textIn
+comment1.target=Button6(boolean,\ java.lang.String)
+comment2.params=
+comment2.target=void\ act()
+numComments=3
